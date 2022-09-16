@@ -15,6 +15,8 @@ public class Main {
         DataManager dm = new DataManager("./data/data.txt");
         ArrayList<Task> tasksData = dm.loadData();
 
+        printDataUsingStream(tasksData);
+
         System.out.println("Printing deadlines");
         printDeadlines(tasksData);
 
@@ -32,10 +34,30 @@ public class Main {
         return count;
     }
 
+    private static int countDeadlinesUsingStream(ArrayList<Task> tasks) {
+        int count = (int) tasks.stream()
+                .filter(t -> t instanceof Deadline)
+                .count();
+
+        return count;
+    }
+
     public static void printData(ArrayList<Task> tasksData) {
         for (Task t : tasksData) {
             System.out.println(t);
         }
+    }
+
+    public static void printDataUsingStream(ArrayList<Task> tasks) {
+        System.out.println("Printing data using stream");
+        tasks.stream()
+                .forEach(System.out::println);
+    }
+    
+    public static void printDeadlinesUsingStream(ArrayList<Task> tasks) {
+        tasks.parallelStream()
+                .filter(t -> t instanceof Deadline)
+                .forEach(System.out::println);
     }
 
     public static void printDeadlines(ArrayList<Task> tasksData) {
